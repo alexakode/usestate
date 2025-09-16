@@ -4,8 +4,8 @@
 import { useState } from "react";
 
 export default function App() {
-  const [isVisible, setIsVisible] = useState(true);
-  const toggleVisibility = () => setIsVisible();
+  const [isVisible, setIsVisible] = useState(false);
+  const toggleVisibility = () => setIsVisible(!isVisible);
   return (
     <div>
       <button onClick={toggleVisibility}>
