@@ -1,17 +1,41 @@
-// hooks, state
-// vi kan importere hooks fra react; useXXX
-// state is immutable, conditional rendering
 import { useState } from "react";
+import "./App.css";
+import useLocalStorage from "./hooks/useLocalStorage";
 
-export default function App() {
-  const [count, setCount] = useState(0);
-  function handleIncrement() {
-    setCount((prev) => prev + 1);
-  }
+function App() {
+  const [input, setInput] = useState("");
+  const [list, setList] = useLocalStorage("list", []);
+
+  const newItem = {
+    id: crypto.randomUUID(),
+    text: input,
+    completed: false,
+  };
+  const handleAdd = () => {
+    setList([...list, newItem]);
+    setInput("");
+  };
+
   return (
-    <div>
-      <h1>Counter: {count}</h1>
-      <button onClick={handleIncrement}>Increment</button>
-    </div>
+    <>
+      <button>Show/hide completed</button>
+      <input
+        type="text"
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            handleAdd();
+          }
+        }}
+      />
+      <button onClick={handleAdd}>Add</button>
+      <ul>
+        {list.map((item) => (
+          <li key={item.id}>{item.text}</li>
+        ))}
+      </ul>
+    </>
   );
 }
+export default App;
