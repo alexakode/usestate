@@ -1,13 +1,21 @@
-export default function TaskCard({ task, onDelete, onToggleComplete }) {
+export default function TaskCard({
+  id,
+  created,
+  completed,
+  text,
+  onDelete,
+  onToggleComplete,
+}) {
   return (
     <div style={{ border: "solid white" }}>
       <input
         type="checkbox"
-        checked={task.completed}
-        onChange={() => onToggleComplete(task.id)}
+        checked={completed}
+        onChange={() => onToggleComplete(id)}
       />
-      <h3>{task.text}</h3>
-      <button onClick={() => onDelete(task.id)}>Delete</button>
+      <p>{new Date(created).toDateString()}</p>
+      <h3>{text}</h3>
+      <button onClick={() => onDelete(id)}>Delete</button>
     </div>
   );
 }

@@ -17,6 +17,7 @@ function App() {
     if (input.trim() !== "") {
       const newItem = {
         id: crypto.randomUUID(),
+        created: new Date().toLocaleString(),
         text: input,
         completed: false,
       };
