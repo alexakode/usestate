@@ -7,6 +7,7 @@ function App() {
   const [input, setInput] = useState("");
   const [list, setList] = useLocalStorage("list", []);
   const [showCompleted, setShowCompleted] = useState(true);
+  const [sortByNew, setSortByNew] = useState(true);
 
   const newItem = {
     id: crypto.randomUUID(),
@@ -17,13 +18,13 @@ function App() {
     if (input.trim() !== "") {
       const newItem = {
         id: crypto.randomUUID(),
-        created: new Date().toLocaleString(),
+        created: new Date().toISOString(),
         text: input,
         completed: false,
       };
+      setItems((prev) => [...prev, newItem]);
+      setInput("");
     }
-    setList([...list, newItem]);
-    setInput("");
   };
   // delete tasks
   const handleDelete = (id) => {
@@ -37,6 +38,12 @@ function App() {
       )
     );
   };
+  // edit task
+  const editTask = (id, newText) => {
+    setList(
+      list.map((task) => (task.id === id ? { ...task, text: newText } : task))
+    );
+  };
   const filteredList = showCompleted
     ? list
     : list.filter((task) => !task.completed);
@@ -44,6 +51,9 @@ function App() {
     <>
       <button onClick={() => setShowCompleted(!showCompleted)}>
         {showCompleted ? "Hide" : "Show"} Completed
+      </button>
+      <button onClick={() => setSortByNew(!sortByNew)}>
+        {sortByNew ? "Sort by Oldest" : "Sort by Newest"}
       </button>
       <input
         type="text"
@@ -59,12 +69,16 @@ function App() {
       <ul>
         {list
           .filter((task) => showCompleted || !task.completed)
+          .sort((a, b) => {
+            return sortByNew ? b.created - a.created : a.created - b.created;
+          })
           .map((item) => (
             <TaskCard
               key={item.id}
               task={item}
               onDelete={() => handleDelete(item.id)}
               onToggleComplete={() => toggleComplete(item.id)}
+              onEdit={(newText) => editTask(item.id, newText)}
             />
           ))}
       </ul>
