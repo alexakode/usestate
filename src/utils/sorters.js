@@ -8,9 +8,9 @@ export const sortModes = {
 export const makeSorter = (mode) => {
   return (a, b) => {
     switch (mode) {
-      case sortModes.NEW_FIRST:
+      case sortModes.newFirst:
         return b.created - a.created;
-      case sortModes.OLD_FIRST:
+      case sortModes.oldFirst:
         return a.created - b.created;
       case sortModes.AZ:
         return a.text.localeCompare(b.text, ["no", "en"], {

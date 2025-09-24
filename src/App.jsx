@@ -1,13 +1,16 @@
 import { useState } from "react";
 import "./App.css";
 import useLocalStorage from "./hooks/useLocalStorage";
-import TaskCard from "./components/TaskCard";
+import TaskCard from "./components/Toolbar/TaskCard";
+import TaskList from "./components/Toolbar/TaskList";
+import Toolbar from "./components/Toolbar/Toolbar";
 
 function App() {
   const [input, setInput] = useState("");
   const [list, setList] = useLocalStorage("list", []);
   const [showCompleted, setShowCompleted] = useState(true);
-  const [sortByNew, setSortByNew] = useState(true);
+  const [sortMode, setSortMode] = useState("newFirst");
+  const [query, setQuery] = useState("");
 
   const newItem = {
     id: crypto.randomUUID(),
@@ -96,23 +99,22 @@ function App() {
         }}
       />
       <button onClick={handleAdd}>Add</button>
-      <ul>
-        {list
-          .filter((task) => showCompleted || !task.completed)
-          .sort(sortList)
-          .map((item) => (
-            <TaskCard
-              key={item.id}
-              id={item.id}
-              created={item.created}
-              completed={item.completed}
-              text={item.text}
-              onDelete={handleDelete}
-              onToggleComplete={toggleComplete}
-              onEdit={editTask}
-            />
-          ))}
-      </ul>
+      <Toolbar
+        setShowCompleted={setShowCompleted}
+        query={query}
+        setQuery={setQuery}
+        sortMode={sortMode}
+        showCompleted={showCompleted}
+        setSortMode={setSortMode}
+      />
+      <TaskList
+        showCompleted={showCompleted}
+        list={list}
+        onDelete={handleDelete}
+        onToggle={toggleComplete}
+        onEdit={editTask}
+        query={query}
+      />
     </>
   );
 }
