@@ -8,8 +8,8 @@ import Toolbar from "./components/Toolbar/Toolbar";
 function App() {
   const [input, setInput] = useState("");
   const [list, setList] = useLocalStorage("list", []);
-  const [showCompleted, setShowCompleted] = useState(true);
-  const [sortMode, setSortMode] = useState("newFirst");
+  // const [showCompleted, setShowCompleted] = useState(true);
+  // const [sortMode, setSortMode] = useState("newFirst");
   const [query, setQuery] = useState("");
 
   const newItem = {

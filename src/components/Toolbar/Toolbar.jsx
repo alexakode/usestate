@@ -7,7 +7,6 @@ export default function Toolbar({
   sortMode,
   showCompleted,
   setSortMode,
-  setShowCompleted,
 }) {
   return (
     <>

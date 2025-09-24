@@ -1,5 +1,5 @@
 import TaskCard from "./TaskCard.jsx";
-import { makeSorter, sortModes } from "../utils/sorters.js";
+import { makeSorter, sortModes } from "../../utils/sorters.js";
 export default function TaskList({
   showCompleted,
   list,
