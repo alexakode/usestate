@@ -14,11 +14,25 @@ function App() {
     text: input,
     completed: false,
   };
+  const sortList = (a, b) => {
+    switch (sortMode) {
+      case "newFirst":
+        return new Date(b.created) - new Date(a.created);
+      case "oldFirst":
+        return new Date(a.created) - new Date(b.created);
+      case "A-Å":
+        return a.text.localeCompare(b.text);
+      case "Å-A":
+        return b.text.localeCompare(a.text);
+      default:
+        return 0;
+    }
+  };
   const handleAdd = () => {
     if (input.trim() !== "") {
       const newItem = {
         id: crypto.randomUUID(),
-        created: new Date().toISOString(),
+        created: Date.now(),
         text: input,
         completed: false,
       };
@@ -49,9 +63,25 @@ function App() {
     : list.filter((task) => !task.completed);
   return (
     <>
+      <input
+        type="text"
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            handleAdd();
+          }
+        }}
+      />
       <button onClick={() => setShowCompleted(!showCompleted)}>
         {showCompleted ? "Hide" : "Show"} Completed
       </button>
+      <select name="" id="">
+        <option value="newFirst">Newest First</option>
+        <option value="oldFirst">Oldest First</option>
+        <option value="A-Å">A-Å</option>
+        <option value="Å-A">Å-A</option>
+      </select>
       <button onClick={() => setSortByNew(!sortByNew)}>
         {sortByNew ? "Sort by Oldest" : "Sort by Newest"}
       </button>
@@ -69,16 +99,17 @@ function App() {
       <ul>
         {list
           .filter((task) => showCompleted || !task.completed)
-          .sort((a, b) => {
-            return sortByNew ? b.created - a.created : a.created - b.created;
-          })
+          .sort(sortList)
           .map((item) => (
             <TaskCard
               key={item.id}
-              task={item}
-              onDelete={() => handleDelete(item.id)}
-              onToggleComplete={() => toggleComplete(item.id)}
-              onEdit={(newText) => editTask(item.id, newText)}
+              id={item.id}
+              created={item.created}
+              completed={item.completed}
+              text={item.text}
+              onDelete={handleDelete}
+              onToggleComplete={toggleComplete}
+              onEdit={editTask}
             />
           ))}
       </ul>
