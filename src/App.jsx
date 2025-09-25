@@ -4,7 +4,7 @@ import useLocalStorage from "./hooks/useLocalStorage";
 import TaskCard from "./components/Toolbar/TaskCard";
 import TaskList from "./components/Toolbar/TaskList";
 import Toolbar from "./components/Toolbar/Toolbar";
-
+// Rip/fix project based on https://github.com/krola1/undervisning2209
 function App() {
   const [input, setInput] = useState("");
   const [list, setList] = useLocalStorage("list", []);
